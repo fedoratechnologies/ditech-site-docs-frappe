@@ -40,42 +40,50 @@
     {
       "fieldname": "primary_username",
       "fieldtype": "Data",
-      "label": "Primary Username"
+      "label": "Primary Username",
+      "permlevel": 1
     },
     {
       "fieldname": "primary_login_credentials",
       "fieldtype": "Password",
-      "label": "Primary Login Credentials"
+      "label": "Primary Login Credentials",
+      "permlevel": 1
     },
     {
       "fieldname": "account_number",
       "fieldtype": "Data",
-      "label": "Account Number"
+      "label": "Account Number",
+      "permlevel": 1
     },
     {
       "fieldname": "pin",
       "fieldtype": "Password",
-      "label": "PIN"
+      "label": "PIN",
+      "permlevel": 1
     },
     {
       "fieldname": "two_step_verification",
       "fieldtype": "Data",
-      "label": "2-Step Verification"
+      "label": "2-Step Verification",
+      "permlevel": 1
     },
     {
       "fieldname": "verification_q1",
       "fieldtype": "Small Text",
-      "label": "Verification Q1"
+      "label": "Verification Q1",
+      "permlevel": 1
     },
     {
       "fieldname": "verification_q2",
       "fieldtype": "Small Text",
-      "label": "Verification Q2"
+      "label": "Verification Q2",
+      "permlevel": 1
     },
     {
       "fieldname": "verification_q3",
       "fieldtype": "Small Text",
-      "label": "Verification Q3"
+      "label": "Verification Q3",
+      "permlevel": 1
     },
     {
       "fieldname": "vendor_phone",
@@ -109,10 +117,29 @@
       "role": "System Manager",
       "share": 1,
       "write": 1
+    },
+    {
+      "permlevel": 1,
+      "read": 1,
+      "role": "System Manager",
+      "write": 1
+    },
+    {
+      "create": 1,
+      "export": 1,
+      "print": 1,
+      "read": 1,
+      "role": "Ditech Credentials Admin",
+      "write": 1
+    },
+    {
+      "permlevel": 1,
+      "read": 1,
+      "role": "Ditech Credentials Admin",
+      "write": 1
     }
   ],
   "sort_field": "modified",
   "sort_order": "DESC",
   "track_changes": 1
 }
-

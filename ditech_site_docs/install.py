@@ -12,7 +12,12 @@ ROLES = [
 
 def after_install() -> None:
 	ensure_roles()
-	ensure_doctype_permissions()
+	# DocType permissions are shipped in the DocType JSON and applied via migrate/reload-doc.
+
+
+def after_migrate() -> None:
+	# Keep roles present across deploys/upgrades.
+	ensure_roles()
 
 
 def ensure_roles() -> None:
@@ -22,40 +27,4 @@ def ensure_roles() -> None:
 		role = frappe.get_doc({"doctype": "Role", "role_name": role_name})
 		role.insert(ignore_permissions=True)
 
-
-def _set_perms(doctype: str, permissions: list[dict]) -> None:
-	dt = frappe.get_doc("DocType", doctype)
-	dt.permissions = []
-	for p in permissions:
-		dt.append("permissions", p)
-	dt.save(ignore_permissions=True)
-	frappe.clear_cache(doctype=doctype)
-
-
-def ensure_doctype_permissions() -> None:
-	_set_perms(
-		"MSP Site",
-		[
-			{"role": "System Manager", "read": 1, "write": 1, "create": 1, "delete": 1, "export": 1, "print": 1},
-			{"role": "Ditech Site Docs User", "read": 1, "export": 1, "print": 1},
-			{"role": "Ditech Site Docs Manager", "read": 1, "write": 1, "create": 1, "export": 1, "print": 1},
-		],
-	)
-
-	_set_perms(
-		"MSP Site Device",
-		[
-			{"role": "System Manager", "read": 1, "write": 1, "create": 1, "delete": 1, "export": 1, "print": 1},
-			{"role": "Ditech Site Docs User", "read": 1, "export": 1, "print": 1},
-			{"role": "Ditech Site Docs Manager", "read": 1, "write": 1, "create": 1, "export": 1, "print": 1},
-		],
-	)
-
-	_set_perms(
-		"MSP Site Account",
-		[
-			{"role": "System Manager", "read": 1, "write": 1, "create": 1, "delete": 1, "export": 1, "print": 1},
-			{"role": "Ditech Credentials Admin", "read": 1, "write": 1, "create": 1, "export": 1, "print": 1},
-		],
-	)
 
