@@ -1,0 +1,126 @@
+{
+  "actions": [],
+  "allow_copy": 0,
+  "allow_import": 1,
+  "allow_rename": 0,
+  "autoname": "hash",
+  "beta": 0,
+  "custom": 0,
+  "doctype": "DocType",
+  "editable_grid": 1,
+  "engine": "InnoDB",
+  "field_order": [
+    "site",
+    "section",
+    "item",
+    "location",
+    "model",
+    "serial_number",
+    "mac",
+    "lan1_ip",
+    "lan2_ip",
+    "wan_ip",
+    "dns1",
+    "os_firmware",
+    "notes"
+  ],
+  "fields": [
+    {
+      "fieldname": "site",
+      "fieldtype": "Link",
+      "label": "Site",
+      "options": "MSP Site",
+      "reqd": 1
+    },
+    {
+      "fieldname": "section",
+      "fieldtype": "Data",
+      "label": "Section"
+    },
+    {
+      "fieldname": "item",
+      "fieldtype": "Data",
+      "label": "Item",
+      "reqd": 1
+    },
+    {
+      "fieldname": "location",
+      "fieldtype": "Data",
+      "label": "Location"
+    },
+    {
+      "fieldname": "model",
+      "fieldtype": "Data",
+      "label": "Model"
+    },
+    {
+      "fieldname": "serial_number",
+      "fieldtype": "Data",
+      "label": "Serial Number",
+      "search_index": 1
+    },
+    {
+      "fieldname": "mac",
+      "fieldtype": "Data",
+      "label": "MAC",
+      "search_index": 1
+    },
+    {
+      "fieldname": "lan1_ip",
+      "fieldtype": "Data",
+      "label": "LAN1 IP"
+    },
+    {
+      "fieldname": "lan2_ip",
+      "fieldtype": "Data",
+      "label": "LAN2 IP"
+    },
+    {
+      "fieldname": "wan_ip",
+      "fieldtype": "Data",
+      "label": "WAN IP"
+    },
+    {
+      "fieldname": "dns1",
+      "fieldtype": "Data",
+      "label": "DNS1"
+    },
+    {
+      "fieldname": "os_firmware",
+      "fieldtype": "Data",
+      "label": "OS / Firmware"
+    },
+    {
+      "fieldname": "notes",
+      "fieldtype": "Small Text",
+      "label": "Notes"
+    }
+  ],
+  "has_web_view": 0,
+  "idx": 0,
+  "in_create": 0,
+  "is_submittable": 0,
+  "issingle": 0,
+  "istable": 0,
+  "max_attachments": 0,
+  "module": "Ditech Site Docs",
+  "name": "MSP Site Device",
+  "permissions": [
+    {
+      "create": 1,
+      "delete": 1,
+      "email": 1,
+      "export": 1,
+      "print": 1,
+      "read": 1,
+      "report": 1,
+      "role": "System Manager",
+      "share": 1,
+      "write": 1
+    }
+  ],
+  "sort_field": "modified",
+  "sort_order": "DESC",
+  "track_changes": 1
+}
+
