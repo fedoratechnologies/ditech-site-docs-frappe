@@ -51,14 +51,14 @@
       "fieldtype": "Link",
       "label": "Site Account",
       "options": "MSP Site Account",
-      "permlevel": 1
+      "permlevel": 0
     },
     {
       "fetch_from": "site_account.vendor",
       "fieldname": "site_account_vendor",
       "fieldtype": "Data",
       "label": "Vendor / System",
-      "permlevel": 1,
+      "permlevel": 0,
       "read_only": 1
     },
     {
