@@ -12,6 +12,9 @@
   "field_order": [
     "site",
     "section",
+    "site_account_section",
+    "site_account",
+    "site_account_vendor",
     "item",
     "location",
     "model",
@@ -36,6 +39,27 @@
       "fieldname": "section",
       "fieldtype": "Data",
       "label": "Section"
+    },
+    {
+      "fieldname": "site_account_section",
+      "fieldtype": "Section Break",
+      "label": "Account"
+    },
+    {
+      "description": "Optional account/system this device belongs to.",
+      "fieldname": "site_account",
+      "fieldtype": "Link",
+      "label": "Site Account",
+      "options": "MSP Site Account",
+      "permlevel": 1
+    },
+    {
+      "fetch_from": "site_account.vendor",
+      "fieldname": "site_account_vendor",
+      "fieldtype": "Data",
+      "label": "Vendor / System",
+      "permlevel": 1,
+      "read_only": 1
     },
     {
       "fieldname": "item",
