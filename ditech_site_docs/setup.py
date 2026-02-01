@@ -151,6 +151,23 @@ def ensure_site_docs_workspace() -> None:
 	# Workspace with shortcuts + the combined report.
 	ensure_site_docs_number_cards()
 
+	# Workspace blocks reference child rows in Workspace Number Card / Workspace Shortcut.
+	number_card_names = [CARD_SITES, CARD_DEVICES, CARD_ROOMS, CARD_ACCOUNTS, CARD_UNLINKED]
+
+	shortcuts = [
+		{
+			"type": "Report",
+			"link_to": REPORT_NAME,
+			"label": REPORT_NAME,
+			"color": "blue",
+			"icon": "chart",
+		},
+		{"type": "DocType", "link_to": "MSP Site", "label": "Sites"},
+		{"type": "DocType", "link_to": "MSP Room", "label": "Rooms"},
+		{"type": "DocType", "link_to": "MSP Site Device", "label": "Devices"},
+		{"type": "DocType", "link_to": "MSP Site Account", "label": "Accounts"},
+	]
+
 	content = [
 		{"id": "sd-header", "type": "header", "data": {"text": "Ditech Site Docs", "col": 12}},
 		{"id": "sd-sites-card", "type": "number_card", "data": {"number_card_name": CARD_SITES, "col": 3}},
@@ -216,6 +233,15 @@ def ensure_site_docs_workspace() -> None:
 	ws.content = json.dumps(content)
 	ws.icon = "tool"
 	ws.label = WORKSPACE_NAME
+
+	# Reset + re-add items (idempotent across deploys).
+	ws.number_cards = []
+	for card_name in number_card_names:
+		ws.append("number_cards", {"number_card_name": card_name, "label": card_name})
+
+	ws.shortcuts = []
+	for shortcut in shortcuts:
+		ws.append("shortcuts", shortcut)
 
 	if exists:
 		ws.save(ignore_permissions=True)
