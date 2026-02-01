@@ -44,13 +44,9 @@ WHERE 1=1
 ORDER BY s.site_name, d.item, d.serial_number
 """.strip()
 
-	if frappe.db.exists("Report", REPORT_NAME):
+	exists = bool(frappe.db.exists("Report", REPORT_NAME))
+	if exists:
 		doc = frappe.get_doc("Report", REPORT_NAME)
-		if getattr(doc, "is_standard", "No") != "Yes":
-			doc.report_type = "Query Report"
-			doc.ref_doctype = "MSP Site Device"
-			doc.module = "Ditech Site Docs"
-			doc.query = query
 	else:
 		doc = frappe.get_doc(
 			{
@@ -65,6 +61,12 @@ ORDER BY s.site_name, d.item, d.serial_number
 				"query": query,
 			}
 		)
+
+	if getattr(doc, "is_standard", "No") != "Yes":
+		doc.report_type = "Query Report"
+		doc.ref_doctype = "MSP Site Device"
+		doc.module = "Ditech Site Docs"
+		doc.query = query
 
 	# Avoid duplicating rows on repeated migrations.
 	doc.roles = []
@@ -87,10 +89,10 @@ ORDER BY s.site_name, d.item, d.serial_number
 	doc.append("filters", {"label": "Serial Number", "fieldname": "serial_number", "fieldtype": "Data"})
 	doc.append("filters", {"label": "MAC", "fieldname": "mac", "fieldtype": "Data"})
 
-	if doc.is_new():
-		doc.insert(ignore_permissions=True)
-	else:
+	if exists:
 		doc.save(ignore_permissions=True)
+	else:
+		doc.insert(ignore_permissions=True)
 
 
 def ensure_number_card(
@@ -99,7 +101,8 @@ def ensure_number_card(
 	document_type: str,
 	filters: list[list] | None = None,
 ) -> None:
-	if frappe.db.exists("Number Card", name):
+	exists = bool(frappe.db.exists("Number Card", name))
+	if exists:
 		doc = frappe.get_doc("Number Card", name)
 	else:
 		doc = frappe.get_doc({"doctype": "Number Card", "name": name})
@@ -113,10 +116,10 @@ def ensure_number_card(
 	doc.module = "Ditech Site Docs"
 	doc.filters_json = json.dumps(filters or [])
 
-	if doc.is_new():
-		doc.insert(ignore_permissions=True)
-	else:
+	if exists:
 		doc.save(ignore_permissions=True)
+	else:
+		doc.insert(ignore_permissions=True)
 
 
 def ensure_site_docs_number_cards() -> None:
@@ -182,7 +185,8 @@ def ensure_site_docs_workspace() -> None:
 		},
 	]
 
-	if frappe.db.exists("Workspace", WORKSPACE_NAME):
+	exists = bool(frappe.db.exists("Workspace", WORKSPACE_NAME))
+	if exists:
 		ws = frappe.get_doc("Workspace", WORKSPACE_NAME)
 	else:
 		ws = frappe.get_doc({"doctype": "Workspace", "name": WORKSPACE_NAME, "title": WORKSPACE_NAME})
@@ -193,8 +197,7 @@ def ensure_site_docs_workspace() -> None:
 	ws.icon = "tool"
 	ws.label = WORKSPACE_NAME
 
-	if ws.is_new():
-		ws.insert(ignore_permissions=True)
-	else:
+	if exists:
 		ws.save(ignore_permissions=True)
-
+	else:
+		ws.insert(ignore_permissions=True)
