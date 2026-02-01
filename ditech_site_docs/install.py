@@ -2,7 +2,12 @@ from __future__ import annotations
 
 import frappe
 
-from ditech_site_docs.setup import ensure_site_docs_report, ensure_site_docs_workspace
+from ditech_site_docs.setup import (
+	ensure_customers_for_sites,
+	ensure_site_docs_report,
+	ensure_site_docs_user_role_for_agents,
+	ensure_site_docs_workspace,
+)
 
 ROLES = [
 	"Ditech Site Docs User",
@@ -19,6 +24,8 @@ def after_install() -> None:
 def after_migrate() -> None:
 	# Keep roles present across deploys/upgrades.
 	ensure_roles()
+	ensure_customers_for_sites()
+	ensure_site_docs_user_role_for_agents()
 	ensure_site_docs_report()
 	ensure_site_docs_workspace()
 
@@ -29,4 +36,3 @@ def ensure_roles() -> None:
 			continue
 		role = frappe.get_doc({"doctype": "Role", "role_name": role_name})
 		role.insert(ignore_permissions=True)
-

@@ -13,6 +13,9 @@ CARD_ROOMS = "MSP Rooms"
 CARD_ACCOUNTS = "MSP Accounts"
 CARD_UNLINKED = "Devices Missing Account"
 
+DEFAULT_CUSTOMER_GROUP = "All Customer Groups"
+DEFAULT_TERRITORY = "All Territories"
+
 
 def ensure_site_docs_report() -> None:
 	# Query Report: combined view of Site + Device + linked Account (vendor/system).
@@ -218,3 +221,72 @@ def ensure_site_docs_workspace() -> None:
 		ws.save(ignore_permissions=True)
 	else:
 		ws.insert(ignore_permissions=True)
+
+
+def ensure_customers_for_sites() -> None:
+	"""Create Customers from MSP Sites (if missing) and link sites to them."""
+	# Guardrails: only touch sites that are currently unlinked.
+	sites = frappe.get_all(
+		"MSP Site",
+		filters={"customer": ["in", ["", None]]},
+		fields=["name", "site_name"],
+	)
+	if not sites:
+		return
+
+	customer_group = frappe.db.exists("Customer Group", DEFAULT_CUSTOMER_GROUP) or frappe.db.get_value(
+		"Customer Group", {"is_group": 1}, "name"
+	)
+	territory = frappe.db.exists("Territory", DEFAULT_TERRITORY) or frappe.db.get_value("Territory", {"is_group": 1}, "name")
+
+	for site in sites:
+		customer_name = (site.site_name or site.name or "").strip()
+		if not customer_name:
+			continue
+
+		# Try match by customer_name first, then by name.
+		customer = frappe.db.get_value("Customer", {"customer_name": customer_name}, "name") or frappe.db.exists(
+			"Customer", customer_name
+		)
+		if not customer:
+			doc = frappe.get_doc(
+				{
+					"doctype": "Customer",
+					"customer_name": customer_name,
+					"customer_type": "Company",
+					"customer_group": customer_group,
+					"territory": territory,
+				}
+			)
+			doc.insert(ignore_permissions=True)
+			customer = doc.name
+
+		frappe.db.set_value("MSP Site", site.name, "customer", customer, update_modified=False)
+
+
+def ensure_site_docs_user_role_for_agents() -> None:
+	"""Give `Ditech Site Docs User` role to users who can handle tickets (role: Agent)."""
+	role_to_grant = "Ditech Site Docs User"
+	if not frappe.db.exists("Role", role_to_grant):
+		return
+
+	agent_users = frappe.get_all(
+		"Has Role",
+		filters={"parenttype": "User", "role": "Agent"},
+		pluck="parent",
+	)
+	if not agent_users:
+		return
+
+	for user in agent_users:
+		if user == "Guest":
+			continue
+		already = frappe.db.exists(
+			"Has Role",
+			{"parenttype": "User", "parent": user, "role": role_to_grant},
+		)
+		if already:
+			continue
+		user_doc = frappe.get_doc("User", user)
+		user_doc.append("roles", {"role": role_to_grant})
+		user_doc.save(ignore_permissions=True)
