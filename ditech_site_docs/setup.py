@@ -9,6 +9,7 @@ REPORT_NAME = "Site Docs Overview"
 WORKSPACE_NAME = "Ditech Site Docs"
 CARD_SITES = "MSP Sites"
 CARD_DEVICES = "MSP Devices"
+CARD_ROOMS = "MSP Rooms"
 CARD_ACCOUNTS = "MSP Accounts"
 CARD_UNLINKED = "Devices Missing Account"
 
@@ -26,6 +27,10 @@ SELECT
   d.location AS location,
   d.model AS model,
   d.serial_number AS serial_number,
+  d.assigned_to_type AS assigned_to,
+  d.assigned_user_email AS assigned_user_email,
+  d.assigned_room AS assigned_room,
+  r.room_name AS assigned_room_name,
   d.mac AS mac,
   d.lan1_ip AS lan1_ip,
   d.wan_ip AS wan_ip,
@@ -34,9 +39,12 @@ SELECT
 FROM `tabMSP Site Device` d
 JOIN `tabMSP Site` s ON s.name = d.site
 LEFT JOIN `tabMSP Site Account` a ON a.name = d.site_account
+LEFT JOIN `tabMSP Room` r ON r.name = d.assigned_room
 WHERE 1=1
   AND (%(customer)s IS NULL OR %(customer)s = '' OR s.customer = %(customer)s)
   AND (%(site)s IS NULL OR %(site)s = '' OR d.site = %(site)s)
+  AND (%(assigned_room)s IS NULL OR %(assigned_room)s = '' OR d.assigned_room = %(assigned_room)s)
+  AND (%(assigned_user_email)s IS NULL OR %(assigned_user_email)s = '' OR d.assigned_user_email LIKE CONCAT('%%', %(assigned_user_email)s, '%%'))
   AND (%(account_vendor)s IS NULL OR %(account_vendor)s = '' OR a.vendor LIKE CONCAT('%%', %(account_vendor)s, '%%'))
   AND (%(item)s IS NULL OR %(item)s = '' OR d.item LIKE CONCAT('%%', %(item)s, '%%'))
   AND (%(serial_number)s IS NULL OR %(serial_number)s = '' OR d.serial_number LIKE CONCAT('%%', %(serial_number)s, '%%'))
@@ -84,6 +92,8 @@ ORDER BY s.site_name, d.item, d.serial_number
 	# Filters (like the Stock workspace / report style).
 	doc.append("filters", {"label": "Customer", "fieldname": "customer", "fieldtype": "Link", "options": "Customer"})
 	doc.append("filters", {"label": "Site", "fieldname": "site", "fieldtype": "Link", "options": "MSP Site"})
+	doc.append("filters", {"label": "Room", "fieldname": "assigned_room", "fieldtype": "Link", "options": "MSP Room"})
+	doc.append("filters", {"label": "User Email", "fieldname": "assigned_user_email", "fieldtype": "Data"})
 	doc.append("filters", {"label": "Account Vendor", "fieldname": "account_vendor", "fieldtype": "Data"})
 	doc.append("filters", {"label": "Item", "fieldname": "item", "fieldtype": "Data"})
 	doc.append("filters", {"label": "Serial Number", "fieldname": "serial_number", "fieldtype": "Data"})
@@ -125,6 +135,7 @@ def ensure_number_card(
 def ensure_site_docs_number_cards() -> None:
 	ensure_number_card(name=CARD_SITES, document_type="MSP Site", filters=[["MSP Site", "is_archived", "=", 0]])
 	ensure_number_card(name=CARD_DEVICES, document_type="MSP Site Device")
+	ensure_number_card(name=CARD_ROOMS, document_type="MSP Room", filters=[["MSP Room", "is_archived", "=", 0]])
 	ensure_number_card(name=CARD_ACCOUNTS, document_type="MSP Site Account")
 	ensure_number_card(
 		name=CARD_UNLINKED,
@@ -141,6 +152,7 @@ def ensure_site_docs_workspace() -> None:
 		{"id": "sd-header", "type": "header", "data": {"text": "Ditech Site Docs", "col": 12}},
 		{"id": "sd-sites-card", "type": "number_card", "data": {"number_card_name": CARD_SITES, "col": 3}},
 		{"id": "sd-devices-card", "type": "number_card", "data": {"number_card_name": CARD_DEVICES, "col": 3}},
+		{"id": "sd-rooms-card", "type": "number_card", "data": {"number_card_name": CARD_ROOMS, "col": 3}},
 		{"id": "sd-accounts-card", "type": "number_card", "data": {"number_card_name": CARD_ACCOUNTS, "col": 3}},
 		{"id": "sd-unlinked-card", "type": "number_card", "data": {"number_card_name": CARD_UNLINKED, "col": 3}},
 		{
@@ -160,6 +172,11 @@ def ensure_site_docs_workspace() -> None:
 			"id": "sd-sites",
 			"type": "shortcut",
 			"data": {"shortcut_name": "Sites", "label": "Sites", "type": "DocType", "link_to": "MSP Site", "col": 4},
+		},
+		{
+			"id": "sd-rooms",
+			"type": "shortcut",
+			"data": {"shortcut_name": "Rooms", "label": "Rooms", "type": "DocType", "link_to": "MSP Room", "col": 4},
 		},
 		{
 			"id": "sd-devices",

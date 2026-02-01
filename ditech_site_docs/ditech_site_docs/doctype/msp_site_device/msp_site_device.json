@@ -19,6 +19,10 @@
     "location",
     "model",
     "serial_number",
+    "assignment_section",
+    "assigned_to_type",
+    "assigned_room",
+    "assigned_user_email",
     "mac",
     "lan1_ip",
     "lan2_ip",
@@ -82,6 +86,33 @@
       "fieldtype": "Data",
       "label": "Serial Number",
       "search_index": 1
+    },
+    {
+      "fieldname": "assignment_section",
+      "fieldtype": "Section Break",
+      "label": "Assignment"
+    },
+    {
+      "fieldname": "assigned_to_type",
+      "fieldtype": "Select",
+      "label": "Assigned To",
+      "options": "\nUser\nRoom"
+    },
+    {
+      "depends_on": "eval:doc.assigned_to_type=='Room'",
+      "fieldname": "assigned_room",
+      "fieldtype": "Link",
+      "label": "Room",
+      "mandatory_depends_on": "eval:doc.assigned_to_type=='Room'",
+      "options": "MSP Room"
+    },
+    {
+      "depends_on": "eval:doc.assigned_to_type=='User'",
+      "fieldname": "assigned_user_email",
+      "fieldtype": "Data",
+      "label": "User Email",
+      "mandatory_depends_on": "eval:doc.assigned_to_type=='User'",
+      "options": "Email"
     },
     {
       "fieldname": "mac",
