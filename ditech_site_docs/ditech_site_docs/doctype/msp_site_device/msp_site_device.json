@@ -12,18 +12,20 @@
   "field_order": [
     "site",
     "section",
-    "site_account_section",
-    "site_account",
-    "site_account_vendor",
     "item",
     "location",
     "model",
     "serial_number",
-    "assignment_section",
-    "assigned_to_type",
-    "assigned_room",
-    "assigned_user_email",
     "mac",
+    "source_system",
+    "google_device_id",
+    "google_status",
+    "google_org_unit_path",
+    "google_assigned_user_email",
+    "google_last_sync_on",
+    "assigned_user",
+    "is_insured",
+    "insurance_policy",
     "lan1_ip",
     "lan2_ip",
     "wan_ip",
@@ -43,27 +45,6 @@
       "fieldname": "section",
       "fieldtype": "Data",
       "label": "Section"
-    },
-    {
-      "fieldname": "site_account_section",
-      "fieldtype": "Section Break",
-      "label": "Account"
-    },
-    {
-      "description": "Optional account/system this device belongs to.",
-      "fieldname": "site_account",
-      "fieldtype": "Link",
-      "label": "Site Account",
-      "options": "MSP Site Account",
-      "permlevel": 0
-    },
-    {
-      "fetch_from": "site_account.vendor",
-      "fieldname": "site_account_vendor",
-      "fieldtype": "Data",
-      "label": "Vendor / System",
-      "permlevel": 0,
-      "read_only": 1
     },
     {
       "fieldname": "item",
@@ -88,37 +69,64 @@
       "search_index": 1
     },
     {
-      "fieldname": "assignment_section",
-      "fieldtype": "Section Break",
-      "label": "Assignment"
-    },
-    {
-      "fieldname": "assigned_to_type",
-      "fieldtype": "Select",
-      "label": "Assigned To",
-      "options": "\nUser\nRoom"
-    },
-    {
-      "depends_on": "eval:doc.assigned_to_type=='Room'",
-      "fieldname": "assigned_room",
-      "fieldtype": "Link",
-      "label": "Room",
-      "mandatory_depends_on": "eval:doc.assigned_to_type=='Room'",
-      "options": "MSP Room"
-    },
-    {
-      "depends_on": "eval:doc.assigned_to_type=='User'",
-      "fieldname": "assigned_user_email",
-      "fieldtype": "Data",
-      "label": "User Email",
-      "mandatory_depends_on": "eval:doc.assigned_to_type=='User'",
-      "options": "Email"
-    },
-    {
       "fieldname": "mac",
       "fieldtype": "Data",
       "label": "MAC",
       "search_index": 1
+    },
+    {
+      "default": "Manual",
+      "fieldname": "source_system",
+      "fieldtype": "Select",
+      "label": "Source System",
+      "options": "Manual\nGoogle Admin\nGLPI\nOther"
+    },
+    {
+      "fieldname": "google_device_id",
+      "fieldtype": "Data",
+      "label": "Google Device ID",
+      "search_index": 1
+    },
+    {
+      "fieldname": "google_status",
+      "fieldtype": "Data",
+      "label": "Google Status"
+    },
+    {
+      "fieldname": "google_org_unit_path",
+      "fieldtype": "Data",
+      "label": "Google Org Unit Path"
+    },
+    {
+      "fieldname": "google_assigned_user_email",
+      "fieldtype": "Data",
+      "label": "Google Assigned User Email",
+      "options": "Email",
+      "search_index": 1
+    },
+    {
+      "fieldname": "google_last_sync_on",
+      "fieldtype": "Datetime",
+      "label": "Google Last Sync On",
+      "read_only": 1
+    },
+    {
+      "fieldname": "assigned_user",
+      "fieldtype": "Link",
+      "label": "Assigned User",
+      "options": "MSP Site User"
+    },
+    {
+      "default": "0",
+      "fieldname": "is_insured",
+      "fieldtype": "Check",
+      "label": "Insured"
+    },
+    {
+      "fieldname": "insurance_policy",
+      "fieldtype": "Link",
+      "label": "Insurance Policy",
+      "options": "MSP Insurance Policy"
     },
     {
       "fieldname": "lan1_ip",
@@ -171,20 +179,6 @@
       "report": 1,
       "role": "System Manager",
       "share": 1,
-      "write": 1
-    },
-    {
-      "export": 1,
-      "print": 1,
-      "read": 1,
-      "role": "Ditech Site Docs User"
-    },
-    {
-      "create": 1,
-      "export": 1,
-      "print": 1,
-      "read": 1,
-      "role": "Ditech Site Docs Manager",
       "write": 1
     }
   ],

@@ -13,6 +13,7 @@
     "site_key",
     "site_name",
     "customer",
+    "hd_customer",
     "site_address_raw",
     "phone",
     "notes",
@@ -37,6 +38,12 @@
       "fieldtype": "Link",
       "label": "Customer",
       "options": "Customer"
+    },
+    {
+      "fieldname": "hd_customer",
+      "fieldtype": "Link",
+      "label": "Helpdesk Customer",
+      "options": "HD Customer"
     },
     {
       "fieldname": "site_address_raw",
@@ -80,20 +87,6 @@
       "report": 1,
       "role": "System Manager",
       "share": 1,
-      "write": 1
-    },
-    {
-      "export": 1,
-      "print": 1,
-      "read": 1,
-      "role": "Ditech Site Docs User"
-    },
-    {
-      "create": 1,
-      "export": 1,
-      "print": 1,
-      "read": 1,
-      "role": "Ditech Site Docs Manager",
       "write": 1
     }
   ],

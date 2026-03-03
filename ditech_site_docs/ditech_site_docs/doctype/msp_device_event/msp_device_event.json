@@ -1,0 +1,130 @@
+{
+  "actions": [],
+  "allow_copy": 0,
+  "allow_import": 1,
+  "allow_rename": 0,
+  "autoname": "hash",
+  "beta": 0,
+  "custom": 0,
+  "doctype": "DocType",
+  "editable_grid": 1,
+  "engine": "InnoDB",
+  "field_order": [
+    "site",
+    "device",
+    "ticket",
+    "source_system",
+    "event_type",
+    "event_at",
+    "details",
+    "old_value",
+    "new_value"
+  ],
+  "fields": [
+    {
+      "fieldname": "site",
+      "fieldtype": "Link",
+      "label": "Site",
+      "options": "MSP Site",
+      "reqd": 1
+    },
+    {
+      "fieldname": "device",
+      "fieldtype": "Link",
+      "label": "Device",
+      "options": "MSP Site Device",
+      "reqd": 1
+    },
+    {
+      "fieldname": "ticket",
+      "fieldtype": "Link",
+      "label": "Ticket",
+      "options": "HD Ticket"
+    },
+    {
+      "fieldname": "source_system",
+      "fieldtype": "Select",
+      "label": "Source System",
+      "options": "Manual\nHelpdesk\nGoogle Admin",
+      "reqd": 1
+    },
+    {
+      "fieldname": "event_type",
+      "fieldtype": "Select",
+      "label": "Event Type",
+      "options": "Ticket Resolved\nRepair\nAssignment Change\nStatus Change\nEnrollment\nDeprovisioned\nNote",
+      "reqd": 1
+    },
+    {
+      "fieldname": "event_at",
+      "fieldtype": "Datetime",
+      "label": "Event At"
+    },
+    {
+      "fieldname": "details",
+      "fieldtype": "Small Text",
+      "label": "Details"
+    },
+    {
+      "fieldname": "old_value",
+      "fieldtype": "Data",
+      "label": "Old Value"
+    },
+    {
+      "fieldname": "new_value",
+      "fieldtype": "Data",
+      "label": "New Value"
+    }
+  ],
+  "has_web_view": 0,
+  "idx": 0,
+  "in_create": 0,
+  "is_submittable": 0,
+  "issingle": 0,
+  "istable": 0,
+  "max_attachments": 0,
+  "module": "Ditech Site Docs",
+  "name": "MSP Device Event",
+  "permissions": [
+    {
+      "create": 1,
+      "delete": 1,
+      "email": 1,
+      "export": 1,
+      "print": 1,
+      "read": 1,
+      "report": 1,
+      "role": "System Manager",
+      "share": 1,
+      "write": 1
+    },
+    {
+      "create": 0,
+      "delete": 0,
+      "email": 0,
+      "export": 1,
+      "print": 1,
+      "read": 1,
+      "report": 1,
+      "role": "Ditech Site Docs User",
+      "share": 0,
+      "write": 0
+    },
+    {
+      "create": 1,
+      "delete": 0,
+      "email": 0,
+      "export": 1,
+      "print": 1,
+      "read": 1,
+      "report": 1,
+      "role": "Ditech Site Docs Manager",
+      "share": 0,
+      "write": 1
+    }
+  ],
+  "sort_field": "modified",
+  "sort_order": "DESC",
+  "track_changes": 1
+}
+

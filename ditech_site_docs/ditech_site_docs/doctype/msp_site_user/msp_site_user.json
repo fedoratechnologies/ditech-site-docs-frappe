@@ -1,0 +1,141 @@
+{
+  "actions": [],
+  "allow_copy": 0,
+  "allow_import": 1,
+  "allow_rename": 0,
+  "autoname": "hash",
+  "beta": 0,
+  "custom": 0,
+  "doctype": "DocType",
+  "editable_grid": 1,
+  "engine": "InnoDB",
+  "field_order": [
+    "site",
+    "email",
+    "full_name",
+    "org_unit_path",
+    "column_break_5",
+    "suspended",
+    "is_admin",
+    "last_login",
+    "google_user_id",
+    "notes",
+    "is_archived"
+  ],
+  "fields": [
+    {
+      "fieldname": "site",
+      "fieldtype": "Link",
+      "label": "Site",
+      "options": "MSP Site",
+      "reqd": 1
+    },
+    {
+      "fieldname": "email",
+      "fieldtype": "Data",
+      "label": "Email",
+      "options": "Email",
+      "reqd": 1,
+      "search_index": 1
+    },
+    {
+      "fieldname": "full_name",
+      "fieldtype": "Data",
+      "label": "Full Name"
+    },
+    {
+      "fieldname": "org_unit_path",
+      "fieldtype": "Data",
+      "label": "Org Unit Path"
+    },
+    {
+      "fieldname": "column_break_5",
+      "fieldtype": "Column Break"
+    },
+    {
+      "default": "0",
+      "fieldname": "suspended",
+      "fieldtype": "Check",
+      "label": "Suspended"
+    },
+    {
+      "default": "0",
+      "fieldname": "is_admin",
+      "fieldtype": "Check",
+      "label": "Admin"
+    },
+    {
+      "fieldname": "last_login",
+      "fieldtype": "Datetime",
+      "label": "Last Login"
+    },
+    {
+      "fieldname": "google_user_id",
+      "fieldtype": "Data",
+      "label": "Google User ID",
+      "search_index": 1
+    },
+    {
+      "fieldname": "notes",
+      "fieldtype": "Small Text",
+      "label": "Notes"
+    },
+    {
+      "default": "0",
+      "fieldname": "is_archived",
+      "fieldtype": "Check",
+      "label": "Archived"
+    }
+  ],
+  "has_web_view": 0,
+  "idx": 0,
+  "in_create": 0,
+  "is_submittable": 0,
+  "issingle": 0,
+  "istable": 0,
+  "max_attachments": 0,
+  "module": "Ditech Site Docs",
+  "name": "MSP Site User",
+  "permissions": [
+    {
+      "create": 1,
+      "delete": 1,
+      "email": 1,
+      "export": 1,
+      "print": 1,
+      "read": 1,
+      "report": 1,
+      "role": "System Manager",
+      "share": 1,
+      "write": 1
+    },
+    {
+      "create": 0,
+      "delete": 0,
+      "email": 0,
+      "export": 1,
+      "print": 1,
+      "read": 1,
+      "report": 1,
+      "role": "Ditech Site Docs User",
+      "share": 0,
+      "write": 0
+    },
+    {
+      "create": 1,
+      "delete": 0,
+      "email": 0,
+      "export": 1,
+      "print": 1,
+      "read": 1,
+      "report": 1,
+      "role": "Ditech Site Docs Manager",
+      "share": 0,
+      "write": 1
+    }
+  ],
+  "sort_field": "modified",
+  "sort_order": "DESC",
+  "track_changes": 1
+}
+

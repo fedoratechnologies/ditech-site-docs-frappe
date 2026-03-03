@@ -1,0 +1,159 @@
+{
+  "actions": [],
+  "allow_copy": 0,
+  "allow_import": 1,
+  "allow_rename": 0,
+  "autoname": "hash",
+  "beta": 0,
+  "custom": 0,
+  "doctype": "DocType",
+  "editable_grid": 1,
+  "engine": "InnoDB",
+  "field_order": [
+    "site",
+    "policy_name",
+    "carrier",
+    "policy_number",
+    "term_section",
+    "start_date",
+    "end_date",
+    "coverage_section",
+    "currency",
+    "coverage_amount",
+    "notes",
+    "is_archived"
+  ],
+  "fields": [
+    {
+      "fieldname": "site",
+      "fieldtype": "Link",
+      "label": "Site",
+      "options": "MSP Site",
+      "reqd": 1
+    },
+    {
+      "fieldname": "policy_name",
+      "fieldtype": "Data",
+      "label": "Policy Name",
+      "reqd": 1
+    },
+    {
+      "fieldname": "carrier",
+      "fieldtype": "Data",
+      "label": "Carrier"
+    },
+    {
+      "fieldname": "policy_number",
+      "fieldtype": "Data",
+      "label": "Policy Number"
+    },
+    {
+      "fieldname": "term_section",
+      "fieldtype": "Section Break",
+      "label": "Term"
+    },
+    {
+      "fieldname": "start_date",
+      "fieldtype": "Date",
+      "label": "Start Date"
+    },
+    {
+      "fieldname": "end_date",
+      "fieldtype": "Date",
+      "label": "End Date"
+    },
+    {
+      "fieldname": "coverage_section",
+      "fieldtype": "Section Break",
+      "label": "Coverage"
+    },
+    {
+      "default": "USD",
+      "fieldname": "currency",
+      "fieldtype": "Link",
+      "label": "Currency",
+      "options": "Currency"
+    },
+    {
+      "fieldname": "coverage_amount",
+      "fieldtype": "Currency",
+      "label": "Annual Coverage Amount",
+      "options": "currency",
+      "reqd": 1
+    },
+    {
+      "fieldname": "notes",
+      "fieldtype": "Small Text",
+      "label": "Notes"
+    },
+    {
+      "default": "0",
+      "fieldname": "is_archived",
+      "fieldtype": "Check",
+      "label": "Archived"
+    }
+  ],
+  "has_web_view": 0,
+  "idx": 0,
+  "in_create": 0,
+  "is_submittable": 0,
+  "issingle": 0,
+  "istable": 0,
+  "max_attachments": 0,
+  "module": "Ditech Site Docs",
+  "name": "MSP Insurance Policy",
+  "permissions": [
+    {
+      "create": 1,
+      "delete": 1,
+      "email": 1,
+      "export": 1,
+      "print": 1,
+      "read": 1,
+      "report": 1,
+      "role": "System Manager",
+      "share": 1,
+      "write": 1
+    },
+    {
+      "create": 0,
+      "delete": 0,
+      "email": 0,
+      "export": 1,
+      "print": 1,
+      "read": 1,
+      "report": 1,
+      "role": "Ditech Site Docs User",
+      "share": 0,
+      "write": 0
+    },
+    {
+      "create": 0,
+      "delete": 0,
+      "email": 0,
+      "export": 1,
+      "print": 1,
+      "read": 1,
+      "report": 1,
+      "role": "Ditech Site Docs Manager",
+      "share": 0,
+      "write": 0
+    },
+    {
+      "create": 1,
+      "delete": 0,
+      "email": 0,
+      "export": 1,
+      "print": 1,
+      "read": 1,
+      "report": 1,
+      "role": "Ditech Insurance Admin",
+      "share": 0,
+      "write": 1
+    }
+  ],
+  "sort_field": "modified",
+  "sort_order": "DESC",
+  "track_changes": 1
+}
+

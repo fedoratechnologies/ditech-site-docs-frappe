@@ -1,0 +1,137 @@
+{
+  "actions": [],
+  "allow_copy": 0,
+  "allow_import": 1,
+  "allow_rename": 0,
+  "autoname": "hash",
+  "beta": 0,
+  "custom": 0,
+  "doctype": "DocType",
+  "editable_grid": 1,
+  "engine": "InnoDB",
+  "field_order": [
+    "site",
+    "domain",
+    "delegated_admin_email",
+    "enabled",
+    "credentials_section",
+    "service_account_json",
+    "status_section",
+    "last_sync_on",
+    "last_sync_status",
+    "last_sync_message"
+  ],
+  "fields": [
+    {
+      "fieldname": "site",
+      "fieldtype": "Link",
+      "label": "Site",
+      "options": "MSP Site",
+      "reqd": 1
+    },
+    {
+      "fieldname": "domain",
+      "fieldtype": "Data",
+      "label": "Google Workspace Domain",
+      "reqd": 1
+    },
+    {
+      "fieldname": "delegated_admin_email",
+      "fieldtype": "Data",
+      "label": "Delegated Admin Email",
+      "options": "Email",
+      "reqd": 1
+    },
+    {
+      "default": "0",
+      "fieldname": "enabled",
+      "fieldtype": "Check",
+      "label": "Enabled"
+    },
+    {
+      "fieldname": "credentials_section",
+      "fieldtype": "Section Break",
+      "label": "Credentials"
+    },
+    {
+      "fieldname": "service_account_json",
+      "fieldtype": "Password",
+      "label": "Service Account JSON"
+    },
+    {
+      "fieldname": "status_section",
+      "fieldtype": "Section Break",
+      "label": "Status"
+    },
+    {
+      "fieldname": "last_sync_on",
+      "fieldtype": "Datetime",
+      "label": "Last Sync On",
+      "read_only": 1
+    },
+    {
+      "fieldname": "last_sync_status",
+      "fieldtype": "Select",
+      "label": "Last Sync Status",
+      "options": "OK\nERROR\nSKIPPED",
+      "read_only": 1
+    },
+    {
+      "fieldname": "last_sync_message",
+      "fieldtype": "Small Text",
+      "label": "Last Sync Message",
+      "read_only": 1
+    }
+  ],
+  "has_web_view": 0,
+  "idx": 0,
+  "in_create": 0,
+  "is_submittable": 0,
+  "issingle": 0,
+  "istable": 0,
+  "max_attachments": 0,
+  "module": "Ditech Site Docs",
+  "name": "MSP Google Workspace",
+  "permissions": [
+    {
+      "create": 1,
+      "delete": 1,
+      "email": 1,
+      "export": 1,
+      "print": 1,
+      "read": 1,
+      "report": 1,
+      "role": "System Manager",
+      "share": 1,
+      "write": 1
+    },
+    {
+      "create": 1,
+      "delete": 0,
+      "email": 0,
+      "export": 0,
+      "print": 0,
+      "read": 1,
+      "report": 1,
+      "role": "Ditech Credentials Admin",
+      "share": 0,
+      "write": 1
+    },
+    {
+      "create": 0,
+      "delete": 0,
+      "email": 0,
+      "export": 0,
+      "print": 0,
+      "read": 1,
+      "report": 1,
+      "role": "Ditech Site Docs Manager",
+      "share": 0,
+      "write": 0
+    }
+  ],
+  "sort_field": "modified",
+  "sort_order": "DESC",
+  "track_changes": 1
+}
+
