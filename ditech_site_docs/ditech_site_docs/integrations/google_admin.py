@@ -3,6 +3,7 @@ from __future__ import annotations
 import json
 
 import frappe
+from frappe import _
 
 try:
 	from google.oauth2 import service_account
@@ -35,6 +36,24 @@ def sync_all_enabled_workspaces() -> None:
 	)
 	for row in workspaces:
 		_sync_one_workspace(row.name)
+
+
+@frappe.whitelist()
+def enqueue_sync_workspace(workspace_name: str) -> None:
+	"""Manually trigger a single-workspace sync (runs in the background)."""
+	workspace_name = (workspace_name or "").strip()
+	if not workspace_name:
+		frappe.throw(_("Missing workspace name."))
+
+	if not frappe.has_permission("MSP Google Workspace", "write", workspace_name):
+		frappe.throw(_("Not permitted."))
+
+	frappe.enqueue(
+		"ditech_site_docs.ditech_site_docs.integrations.google_admin._sync_one_workspace",
+		queue="long",
+		job_name=f"ditech-google-admin-sync:{workspace_name}",
+		workspace_name=workspace_name,
+	)
 
 
 def _sync_one_workspace(workspace_name: str) -> None:
@@ -245,4 +264,3 @@ def _create_device_event(
 		}
 	)
 	event.insert(ignore_permissions=True)
-

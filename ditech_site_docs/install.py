@@ -33,7 +33,7 @@ def ensure_roles() -> None:
 
 def ensure_custom_fields() -> None:
 	"""Add stable, GitOps-managed fields needed for MSP workflows."""
-	fields = [
+	hd_ticket_fields = [
 		{
 			"fieldname": "msp_site",
 			"label": "MSP Site",
@@ -48,6 +48,35 @@ def ensure_custom_fields() -> None:
 			"options": "MSP Site Device",
 			"insert_after": "msp_site",
 		},
+		{
+			"fieldname": "insured_serial_no",
+			"label": "Insured Serial No",
+			"fieldtype": "Data",
+			"insert_after": "msp_site_device",
+		},
+		{
+			"fieldname": "insurance_deduction_amount",
+			"label": "Insurance Deduction Amount",
+			"fieldtype": "Currency",
+			"insert_after": "insured_serial_no",
+		},
+		{
+			"default": "0",
+			"fieldname": "insurance_deducted",
+			"label": "Insurance Deducted",
+			"fieldtype": "Check",
+			"insert_after": "insurance_deduction_amount",
+			"read_only": 1,
+		},
 	]
 
-	create_custom_fields({"HD Ticket": fields}, update=True)
+	hd_customer_fields = [
+		{
+			"fieldname": "insurance_balance",
+			"label": "Insurance Balance",
+			"fieldtype": "Currency",
+			"insert_after": "domain",
+		},
+	]
+
+	create_custom_fields({"HD Ticket": hd_ticket_fields, "HD Customer": hd_customer_fields}, update=True)
