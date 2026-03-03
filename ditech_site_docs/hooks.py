@@ -10,14 +10,14 @@ after_migrate = "ditech_site_docs.install.after_migrate"
 
 doc_events = {
 	"HD Ticket": {
-		"on_update": "ditech_site_docs.integrations.helpdesk.on_hd_ticket_update",
+		"on_update": "ditech_site_docs.ditech_site_docs.integrations.helpdesk.on_hd_ticket_update",
 	},
 }
 
 scheduler_events = {
 	"cron": {
 		"0 */3 * * *": [
-			"ditech_site_docs.integrations.google_admin.sync_all_enabled_workspaces",
+			"ditech_site_docs.ditech_site_docs.integrations.google_admin.sync_all_enabled_workspaces",
 		],
 	},
 }
