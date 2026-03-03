@@ -51,7 +51,8 @@ def ensure_custom_fields() -> None:
 		{
 			"fieldname": "insured_serial_no",
 			"label": "Insured Serial No",
-			"fieldtype": "Data",
+			"fieldtype": "Link",
+			"options": "Serial No",
 			"insert_after": "msp_site_device",
 		},
 		{
