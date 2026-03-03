@@ -119,32 +119,21 @@
       "write": 1
     },
     {
-      "export": 1,
-      "print": 1,
-      "read": 1,
-      "role": "Ditech Site Docs User"
-    },
-    {
       "create": 1,
-      "delete": 1,
-      "export": 1,
-      "print": 1,
+      "delete": 0,
+      "email": 0,
+      "export": 0,
+      "print": 0,
       "read": 1,
-      "role": "Ditech Site Docs Manager",
+      "report": 1,
+      "role": "Ditech Credentials Admin",
+      "share": 0,
       "write": 1
     },
     {
       "permlevel": 1,
       "read": 1,
       "role": "System Manager",
-      "write": 1
-    },
-    {
-      "create": 1,
-      "export": 1,
-      "print": 1,
-      "read": 1,
-      "role": "Ditech Credentials Admin",
       "write": 1
     },
     {

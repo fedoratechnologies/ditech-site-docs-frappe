@@ -14,14 +14,12 @@ ROLES = [
 
 def after_install() -> None:
 	ensure_roles()
-	ensure_doctype_permissions()
 	ensure_custom_fields()
 
 
 def after_migrate() -> None:
-	"""Keep DocType perms/roles consistent across GitOps deploys."""
+	"""Keep roles + stable custom fields consistent across GitOps deploys."""
 	ensure_roles()
-	ensure_doctype_permissions()
 	ensure_custom_fields()
 
 
@@ -31,109 +29,6 @@ def ensure_roles() -> None:
 			continue
 		role = frappe.get_doc({"doctype": "Role", "role_name": role_name})
 		role.insert(ignore_permissions=True)
-
-
-def _set_perms(doctype: str, permissions: list[dict]) -> None:
-	dt = frappe.get_doc("DocType", doctype)
-	dt.permissions = []
-	for p in permissions:
-		dt.append("permissions", p)
-	dt.save(ignore_permissions=True)
-	frappe.clear_cache(doctype=doctype)
-
-
-def ensure_doctype_permissions() -> None:
-	_set_perms(
-		"MSP Site",
-		[
-			{"role": "System Manager", "read": 1, "write": 1, "create": 1, "delete": 1, "export": 1, "print": 1},
-			{"role": "Ditech Site Docs User", "read": 1, "export": 1, "print": 1},
-			{"role": "Ditech Site Docs Manager", "read": 1, "write": 1, "create": 1, "export": 1, "print": 1},
-		],
-	)
-
-	_set_perms(
-		"MSP Site Device",
-		[
-			{"role": "System Manager", "read": 1, "write": 1, "create": 1, "delete": 1, "export": 1, "print": 1},
-			{"role": "Ditech Site Docs User", "read": 1, "export": 1, "print": 1},
-			{"role": "Ditech Site Docs Manager", "read": 1, "write": 1, "create": 1, "export": 1, "print": 1},
-		],
-	)
-
-	_set_perms(
-		"MSP Site Account",
-		[
-			{"role": "System Manager", "read": 1, "write": 1, "create": 1, "delete": 1, "export": 1, "print": 1},
-			{"role": "Ditech Credentials Admin", "read": 1, "write": 1, "create": 1, "export": 1, "print": 1},
-		],
-	)
-
-	_set_perms(
-		"MSP Google Workspace",
-		[
-			{"role": "System Manager", "read": 1, "write": 1, "create": 1, "delete": 1, "export": 1, "print": 1},
-			{"role": "Ditech Credentials Admin", "read": 1, "write": 1, "create": 1, "export": 1, "print": 1},
-			{"role": "Ditech Site Docs Manager", "read": 1, "export": 0, "print": 0},
-		],
-	)
-
-	_set_perms(
-		"MSP Site User",
-		[
-			{"role": "System Manager", "read": 1, "write": 1, "create": 1, "delete": 1, "export": 1, "print": 1},
-			{"role": "Ditech Site Docs User", "read": 1, "export": 1, "print": 1},
-			{"role": "Ditech Site Docs Manager", "read": 1, "write": 1, "create": 1, "export": 1, "print": 1},
-		],
-	)
-
-	_set_perms(
-		"MSP Device Event",
-		[
-			{"role": "System Manager", "read": 1, "write": 1, "create": 1, "delete": 1, "export": 1, "print": 1},
-			{"role": "Ditech Site Docs User", "read": 1, "export": 1, "print": 1},
-			{"role": "Ditech Site Docs Manager", "read": 1, "write": 1, "create": 1, "export": 1, "print": 1},
-		],
-	)
-
-	_set_perms(
-		"MSP Insurance Policy",
-		[
-			{"role": "System Manager", "read": 1, "write": 1, "create": 1, "delete": 1, "export": 1, "print": 1},
-			{"role": "Ditech Insurance Admin", "read": 1, "write": 1, "create": 1, "export": 1, "print": 1},
-			{"role": "Ditech Site Docs User", "read": 1, "export": 1, "print": 1},
-			{"role": "Ditech Site Docs Manager", "read": 1, "export": 1, "print": 1},
-		],
-	)
-
-	_set_perms(
-		"MSP Insurance Transaction",
-		[
-			{
-				"role": "System Manager",
-				"read": 1,
-				"write": 1,
-				"create": 1,
-				"delete": 1,
-				"export": 1,
-				"print": 1,
-				"submit": 1,
-				"cancel": 1,
-			},
-			{
-				"role": "Ditech Insurance Admin",
-				"read": 1,
-				"write": 1,
-				"create": 1,
-				"export": 1,
-				"print": 1,
-				"submit": 1,
-				"cancel": 1,
-			},
-			{"role": "Ditech Site Docs User", "read": 1, "print": 1},
-			{"role": "Ditech Site Docs Manager", "read": 1, "print": 1},
-		],
-	)
 
 
 def ensure_custom_fields() -> None:
