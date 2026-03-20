@@ -64,7 +64,10 @@ def _sync_one_workspace(workspace_name: str) -> None:
 		_set_workspace_status(workspace, "SKIPPED", "Missing delegated admin email.")
 		return
 
-	service_account_json = (workspace.get_password("service_account_json") or "").strip()
+	try:
+		service_account_json = (workspace.get_password("service_account_json") or "").strip()
+	except Exception:
+		service_account_json = ""
 	if not service_account_json:
 		_set_workspace_status(workspace, "SKIPPED", "Missing service account JSON.")
 		return
@@ -80,19 +83,60 @@ def _sync_one_workspace(workspace_name: str) -> None:
 		creds = creds.with_subject(workspace.delegated_admin_email)
 		admin = build("admin", "directory_v1", credentials=creds, cache_discovery=False)
 
-		_sync_users(admin=admin, site=workspace.site)
-		_sync_chromeos_devices(admin=admin, site=workspace.site)
+		users_ok = True
+		devices_ok = True
 
-		_set_workspace_status(workspace, "OK", "Sync completed.")
+		try:
+			_sync_users(admin=admin, site=workspace.site)
+		except Exception:
+			users_ok = False
+			frappe.log_error(
+				title=f"DiTech: Google Admin users sync failed ({workspace.name})",
+				message=frappe.get_traceback(),
+			)
+
+		try:
+			_sync_chromeos_devices(admin=admin, site=workspace.site)
+		except Exception:
+			devices_ok = False
+			frappe.log_error(
+				title=f"DiTech: Google Admin ChromeOS sync failed ({workspace.name})",
+				message=frappe.get_traceback(),
+			)
+
+		if users_ok and devices_ok:
+			_set_workspace_status(workspace, "OK", "Synced users and ChromeOS devices.")
+		elif devices_ok and not users_ok:
+			_set_workspace_status(
+				workspace,
+				"OK",
+				"Synced ChromeOS devices; user sync failed (check delegated admin privileges / scope: admin.directory.user.readonly).",
+			)
+		elif users_ok and not devices_ok:
+			_set_workspace_status(
+				workspace,
+				"OK",
+				"Synced users; ChromeOS device sync failed (check delegated admin privileges / scope: admin.directory.device.chromeos.readonly).",
+			)
+		else:
+			_set_workspace_status(workspace, "ERROR", "Sync failed. See Error Log for details.")
 	except Exception:
 		frappe.log_error(title=f"DiTech: Google Admin sync failed ({workspace.name})", message=frappe.get_traceback())
 		_set_workspace_status(workspace, "ERROR", "Sync failed. See Error Log for details.")
 
 
 def _set_workspace_status(workspace: frappe.model.document.Document, status: str, message: str) -> None:
-	workspace.last_sync_status = status
-	workspace.last_sync_message = message
-	workspace.save(ignore_permissions=True)
+	# Avoid `workspace.save()` here: password fields may not be loaded and can be cleared on save.
+	frappe.db.set_value(
+		"MSP Google Workspace",
+		workspace.name,
+		{
+			"last_sync_on": workspace.last_sync_on,
+			"last_sync_status": status,
+			"last_sync_message": message,
+		},
+		update_modified=False,
+	)
 
 
 def _sync_users(admin, site: str) -> None:
@@ -145,7 +189,10 @@ def _upsert_site_user(site: str, user: dict) -> None:
 	doc.google_user_id = google_user_id or doc.google_user_id
 	if last_login_time:
 		try:
-			doc.last_login = frappe.utils.get_datetime(last_login_time)
+			dt = frappe.utils.get_datetime(last_login_time)
+			if getattr(dt, "tzinfo", None):
+				dt = dt.replace(tzinfo=None)
+			doc.last_login = dt
 		except Exception:
 			pass
 	doc.is_archived = 0
@@ -212,7 +259,10 @@ def _upsert_site_device(site: str, device: dict) -> None:
 	doc.google_assigned_user_email = assigned_user_email
 	if last_sync:
 		try:
-			doc.google_last_sync_on = frappe.utils.get_datetime(last_sync)
+			dt = frappe.utils.get_datetime(last_sync)
+			if getattr(dt, "tzinfo", None):
+				dt = dt.replace(tzinfo=None)
+			doc.google_last_sync_on = dt
 		except Exception:
 			pass
 
